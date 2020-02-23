@@ -1,7 +1,7 @@
+from update_zip_file import UpdateableZipFile
 import tempfile,zipfile
 import io,os
  
-from update_zip_file import UpdateableZipFile
 
 
 class DOCX_LEAK:
@@ -59,5 +59,5 @@ class DOCX_LEAK:
  
 
 if __name__ == "__main__":
-    dxl = DOCX_LEAK("<docx-filename>","<url>")
+    dxl = DOCX_LEAK("<docx-file-path>","<url>")
     dxl.poision_file()
